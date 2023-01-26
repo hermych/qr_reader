@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:qr_reader/pages/pages.dart';
+
+import 'package:qr_reader/providers/scan_list_provider.dart';
 import 'package:qr_reader/providers/ui_provider.dart';
 
 void main() => runApp(const MyApp());
@@ -14,7 +17,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => UiProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ScanListProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -26,8 +32,8 @@ class MyApp extends StatelessWidget {
         },
         theme: ThemeData(
           primaryColor: Colors.deepPurple,
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Colors.deepPurple),
+          floatingActionButtonTheme:
+              const FloatingActionButtonThemeData(backgroundColor: Colors.blue),
         ),
       ),
     );

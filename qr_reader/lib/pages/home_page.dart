@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_reader/pages/pages.dart';
-import 'package:qr_reader/providers/db_provider.dart';
+import 'package:qr_reader/providers/scan_list_provider.dart';
 import 'package:qr_reader/providers/ui_provider.dart';
 import 'package:qr_reader/widgets/widgets.dart';
 
@@ -12,12 +12,18 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Center(child: Text('Historial')),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.delete_forever))
+          IconButton(
+            onPressed: () {
+              Provider.of<ScanListProvider>(context, listen: false)
+                  .borrarTodos();
+            },
+            icon: const Icon(Icons.delete_forever),
+          )
         ],
       ),
       body: _HomePageBody(),
       bottomNavigationBar: CustomNavigationBar(),
-      floatingActionButton: SacanButtom(),
+      floatingActionButton: ScanButtom(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -31,18 +37,19 @@ class _HomePageBody extends StatelessWidget {
     // Cambiar la pagina respectiva
     final currentIndex = uiProvider.selectedMenuOpt;
 
-    //TODO: temporal leer la base de datos
-    //final tempScan = new ScanModel(valor: 'http:google.com');
-    //DBProvider.db.nuevoScan(tempScan);
-    DBProvider.db.getScanAll().then(print);
+    // Usar el ScanListProvider
+    final scanListoProvider =
+        Provider.of<ScanListProvider>(context, listen: false);
 
     switch (currentIndex) {
       case 0:
+        scanListoProvider.cargarScanTipo('geo');
         return MapasPage();
       case 1:
+        scanListoProvider.cargarScanTipo('http');
         return DireccionesPages();
       default:
-        return HomePage();
+        return MapasPage();
     }
   }
 }
